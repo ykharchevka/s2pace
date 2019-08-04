@@ -72,3 +72,9 @@ async def message_data(request):
         """
     )
     return Response(text=json_str, content_type='application/json')
+
+
+async def replay_upload(request):
+    data = dict(await request.post())
+    print(data)
+    return Response(text='Replay upload successful', content_type='application/json')

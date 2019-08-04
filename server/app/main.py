@@ -9,7 +9,7 @@ from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
 from .db import prepare_database
 from .settings import Settings
-from .views import index, message_data, messages
+from .views import index, message_data, messages, replay_upload
 
 THIS_DIR = Path(__file__).parent
 
@@ -43,4 +43,5 @@ async def create_app():
     app.router.add_get('/', index, name='index')
     app.router.add_route('*', '/messages', messages, name='messages')
     app.router.add_get('/messages/data', message_data, name='message-data')
+    app.router.add_post('/replay_upload', replay_upload, name='replay-upload')
     return app
