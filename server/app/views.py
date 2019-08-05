@@ -75,6 +75,11 @@ async def message_data(request):
 
 
 async def replay_upload(request):
+    filename = 'media/1.SC2Replay'
     data = dict(await request.post())
-    print(data)
+    with open(filename, 'wb') as file:
+        file.write(data['upload_file'].file.read())
+    from .helpers.ReplayParser import ReplayParser
+    rp = ReplayParser()
+    rp.parse(filename)
     return Response(text='Replay upload successful', content_type='application/json')
