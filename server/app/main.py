@@ -16,12 +16,13 @@ THIS_DIR = Path(__file__).parent
 
 async def startup(app: web.Application):
     settings: Settings = app['settings']
-    await prepare_database(settings, False)
-    app['pg'] = await asyncpg.create_pool(dsn=settings.pg_dsn, min_size=2)
+    # await prepare_database(settings, False)
+    # app['pg'] = await asyncpg.create_pool(dsn=settings.pg_dsn, min_size=2)
 
 
 async def cleanup(app: web.Application):
-    await app['pg'].close()
+    pass
+    # await app['pg'].close()
 
 
 async def create_app():

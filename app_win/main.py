@@ -1,25 +1,31 @@
 import os
 import time
+import glob
 import requests
 
-SERVER_URL = 'http://localhost:8000/replay_upload'
-REPLAYS_DIR = 'C:/Users/y/Documents/StarCraft II/Accounts/107039707/2-S2-1-1137385/Replays/Multiplayer/'
+DEFAULT_SERVER_PATH = 'http://localhost:8765/replay_upload'
 
 
-def replay_upload(replay_path):
-    files = {'upload_file': open(replay_path, 'rb')}
-    values = {'DB': 'photcat', 'OUT': 'csv', 'SHORT': 'short'}
-    r = requests.post(SERVER_URL, files=files, data=values)
-    print(r)
+def replay_upload(server_url, replay_path):
+    with open(replay_path, 'rb') as file:
+        files = {'upload_file': file}
+        values = {'DB': 'photcat', 'OUT': 'csv', 'SHORT': 'short'}
+        r = requests.post(server_url, files=files, data=values)
+    print('Replay sending status:', r)
 
 
 def main():
-    replay_files_was = set(os.listdir(REPLAYS_DIR))
+    server_url = input('Input your server path [' + DEFAULT_SERVER_PATH + ']: ') or DEFAULT_SERVER_PATH
+    possible_replays_dir = glob.glob('C:/Users/*/Documents/StarCraft II/Accounts/*/*/Replays/Multiplayer/')
+    possible_replays_dir = '' if not len(possible_replays_dir) else possible_replays_dir[0]
+    replays_dir = input('Input your replays path [' + possible_replays_dir + ']: ') or possible_replays_dir
+    replay_files_was = set(os.listdir(replays_dir))
+    print('Tracking replays folder for new ones...')
     while True:
-        if len(os.listdir(REPLAYS_DIR)) > len(replay_files_was):
-            print('new file identified')
-            replay_files_is = set(os.listdir(REPLAYS_DIR))
-            replay_upload(REPLAYS_DIR + (replay_files_is - replay_files_was).pop())
+        if len(os.listdir(replays_dir)) > len(replay_files_was):
+            print('New replay identified. Trying to send it to server...')
+            replay_files_is = set(os.listdir(replays_dir))
+            replay_upload(server_url, replays_dir + (replay_files_is - replay_files_was).pop())
             replay_files_was = replay_files_is
         time.sleep(1)
 
