@@ -5,6 +5,7 @@ from aiohttp_jinja2 import template
 from aiohttp_session import get_session
 from pydantic import BaseModel, ValidationError, constr
 
+from .helpers.ReplayParser import ReplayParser
 
 @template('index.jinja')
 async def index(request):
@@ -75,11 +76,16 @@ async def message_data(request):
 
 
 async def replay_upload(request):
-    filename = 'media/1.SC2Replay'
+    filepath = 'media/'
+
     data = dict(await request.post())
+    file_object = data['upload_file'].file
+
+    rp = ReplayParser(file_object)
+    filename = filepath + rp.get_replay_name() + '.SC2Replay'
+
     with open(filename, 'wb') as file:
-        file.write(data['upload_file'].file.read())
-    from .helpers.ReplayParser import ReplayParser
-    rp = ReplayParser()
-    rp.parse(filename)
+        file.write(file_object.read())
+
+    rp.parse()
     return Response(text='Replay upload successful', content_type='application/json')
