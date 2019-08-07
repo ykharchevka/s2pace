@@ -42,7 +42,7 @@ async def create_app():
     aiohttp_session.setup(app, EncryptedCookieStorage(settings.auth_key, cookie_name=settings.cookie_name))
 
     app.router.add_get('/', index, name='index')
-    app.router.add_route('*', '/messages', messages, name='messages')
-    app.router.add_get('/messages/data', message_data, name='message-data')
+    # app.router.add_route('*', '/messages', messages, name='messages')
+    # app.router.add_get('/messages/data', message_data, name='message-data')
     app.router.add_post('/replay_upload', replay_upload, name='replay-upload')
     return app
