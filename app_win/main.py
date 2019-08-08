@@ -2,6 +2,7 @@ import os
 import time
 import glob
 import requests
+from multiprocessing import Queue  # fixes "module queue not found" issue for built app
 
 DEFAULT_SERVER_PATH = 'http://localhost:8765/replay_upload'
 
