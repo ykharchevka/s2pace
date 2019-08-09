@@ -15,8 +15,15 @@ class ReplayParser:
                     .replace(' (Zerg)', '(Z)')
                     .replace(' (Terran)', '(T)')
                     .replace(' (Protos)', '(P)')
-                    .replace('A.I. ', 'AI')
-                    .replace(' (Very Easy)', 'VE'))
+                    .replace('A.I. 1', 'AI')
+                    .replace(' (Very Easy)', '1')
+                    .replace(' (Easy)',      '2')
+                    .replace(' (Medium)',    '3')
+                    .replace(' (Hard)',      '4')
+                    .replace(' (Harder)',    '5')
+                    .replace(' (Very Hard)', '6')
+                    .replace(' (Elite)',     '7')
+                )
         return name
 
 
