@@ -12,12 +12,13 @@ if os.path.exists(CUSTOM_SERVER_PATH_FILENAME):
 else:
     print(CUSTOM_SERVER_PATH_FILENAME, 'not found at', os.getcwd())
 
+
 def replay_upload(server_url, replay_path):
     with open(replay_path, 'rb') as file:
         files = {'upload_file': file}
         values = {'DB': 'photcat', 'OUT': 'csv', 'SHORT': 'short'}
         r = requests.post(server_url, files=files, data=values)
-    print('Replay sending status:', r)
+    print(time.ctime(), ':: replay sending status is', r)
 
 
 def main():
