@@ -105,3 +105,6 @@ venv.bak/
 
 # PyCharm
 .idea/
+
+# Custom things
+SERVER_PATH.txt

@@ -14,7 +14,7 @@ class ReplayParser:
                     .replace('Player 2 - ', '')
                     .replace(' (Zerg)', '(Z)')
                     .replace(' (Terran)', '(T)')
-                    .replace(' (Protos)', '(P)')
+                    .replace(' (Protoss)', '(P)')
                     .replace('A.I. 1', 'AI')
                     .replace(' (Very Easy)', '1')
                     .replace(' (Easy)',      '2')

@@ -5,7 +5,12 @@ import requests
 from multiprocessing import Queue  # fixes "module queue not found" issue for built app
 
 DEFAULT_SERVER_PATH = 'http://localhost:8765/replay_upload'
-
+CUSTOM_SERVER_PATH_FILENAME = 'SERVER_PATH.txt'
+if os.path.exists(CUSTOM_SERVER_PATH_FILENAME):
+    with open(CUSTOM_SERVER_PATH_FILENAME, 'r') as file:
+        DEFAULT_SERVER_PATH = file.readline()[:-1]
+else:
+    print(CUSTOM_SERVER_PATH_FILENAME, 'not found at', os.getcwd())
 
 def replay_upload(server_url, replay_path):
     with open(replay_path, 'rb') as file:
