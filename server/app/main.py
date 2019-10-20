@@ -7,29 +7,25 @@ import jinja2
 from aiohttp import web
 from aiohttp_session.cookie_storage import EncryptedCookieStorage
 
-from .db import prepare_database
-from .settings import Settings
 from .views import index, message_data, messages, replay_upload
+from .config import DB_DSN, AUTH_KEY, COOKIE_NAME
 
 THIS_DIR = Path(__file__).parent
 
 
 async def startup(app: web.Application):
-    settings: Settings = app['settings']
-    # await prepare_database(settings, False)
-    # app['pg'] = await asyncpg.create_pool(dsn=settings.pg_dsn, min_size=2)
+    # TODO: trigger create_tables here to get db ready
+    app['pg'] = await asyncpg.create_pool(dsn=DB_DSN, min_size=2)  # TODO: change to connecting by means of aiopg
 
 
 async def cleanup(app: web.Application):
-    pass
-    # await app['pg'].close()
+    app['db'].close()
+    await app['db'].wait_closed()
 
 
 async def create_app():
     app = web.Application()
-    settings = Settings()
     app.update(
-        settings=settings,
         static_root_url='/static/',
     )
 
@@ -39,7 +35,7 @@ async def create_app():
     app.on_startup.append(startup)
     app.on_cleanup.append(cleanup)
 
-    aiohttp_session.setup(app, EncryptedCookieStorage(settings.auth_key, cookie_name=settings.cookie_name))
+    aiohttp_session.setup(app, EncryptedCookieStorage(AUTH_KEY, cookie_name=COOKIE_NAME))
 
     app.router.add_get('/', index, name='index')
     # app.router.add_route('*', '/messages', messages, name='messages')
