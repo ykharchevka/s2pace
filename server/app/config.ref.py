@@ -1,5 +1,4 @@
 DB_DSN = 'postgres://username:password@localhost:5432/database_name'
-
+AUTH_KEY = 'auth_key_secret'
 APP_NAME = 'server'
-AUTH_KEY = 'i_MduKyARkyhz3XGZ6tvvmG2i28dxPYObIiD_OST3Ns='
 COOKIE_NAME = 'server'
