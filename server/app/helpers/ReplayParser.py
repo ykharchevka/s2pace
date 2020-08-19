@@ -1,4 +1,4 @@
-import sc2reader
+import sc2reader  # pip install --force-reinstall git+https://github.com/ggtracker/sc2reader.git
 
 class ReplayParser:
     def __init__(self, replay):
@@ -26,20 +26,54 @@ class ReplayParser:
                 )
         return name
 
+    def _stats_spread_creep(self):
+        point_command_events = [i for i in self.replay.events if 'TargetPointCommandEvent' in i.name]
+        tumor_events = [i for i in point_command_events if 'Tumor' in i.ability_name]
+        tumors = [(i.second, i.ability_name) for i in tumor_events]
+        print('total tumors: {}, by queens: {}, by tumors: {}'.format(
+            len(tumors),
+            len([i for i in tumors if 'Build' not in i[1]]),
+            len([i for i in tumors if 'Build' in i[1]])
+        ))
+        for i in tumors:
+            print('{:>4}. {}'.format(i[0], 'tumor by Queen' if 'Build' not in i[1] else 'tumor by tumor'))
 
     def parse(self):
-        print(self.replay.game_length, "seconds")  # 982
-        print(self.replay.frames, "frames")  # 22017
+        print(self.replay.game_length.total_seconds(), "seconds")  # 982
+        print(self.replay.frames, "frames")  # 2201
+        '''
+        TODOs:
+        # army
+        1. hydras + 2 * lurkers num in time        
+        
+        # core buildings
+        2. spawning pool ready
+        3. lair ready
+        4. hydra den ready
+        5. lurker den ready
+        
+        # core upgrades
+        6. hydra range ready
+        7. hydra speed ready        
+        8. missile attack 1 ready        
+        9. missile attack 2 ready
+        
+        # economy
+        10. drones num in time
+        11. queens num in time
+        12. queens mana pool in time
+        13. 2nd hatchery ready
+        14. 3d hatchery ready
+        15. larvas used
+        16. hatcheries with 3 larvas alerts
+        17. supply used / available        
+        18. minerals income
+        19. gas income
+        
+        # def
+        20. zerglings ready
+        21. spores ready
+        22. metabolic boost ready        
+        '''
 
-        abilities = [i.ability_name for i in self.replay.events if 'TargetPointCommandEvent' in i.name]
-
-        a = [i for i in self.replay.events if 'TargetPointCommandEvent' in i.name]
-        print(a[0].second)  # 3
-        print(a[-1].second)  # 1370  -> 1 real second ~= 1.4 game seconds?
-        b = [i for i in a if 'Tumor' in i.ability_name]
-        c = [(i.second, i.ability_name) for i in b]
-        print(
-            'total tumors: {}, by queens: {}, by tumors: {}'.format(len(c), len([i for i in c if 'Build' not in i[1]]),
-                                                                    len([i for i in c if 'Build' in i[1]])))
-        for i in c:
-            print('{:>4}. {}'.format(i[0], 'tumor by Queen' if 'Build' not in i[1] else 'tumor by tumor'))
+        self._stats_spread_creep()
