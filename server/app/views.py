@@ -6,6 +6,8 @@ from aiohttp_session import get_session
 from pydantic import BaseModel, ValidationError, constr
 
 from .helpers.ReplayParser import ReplayParser
+from .config import APP_NAME
+
 
 @template('index.jinja')
 async def index(request):
@@ -17,7 +19,7 @@ async def index(request):
     """
     # Note: we return a dict not a response because of the @template decorator
     return {
-        'title': request.app['settings'].name,
+        'title': APP_NAME,
         'intro': "Success! you've setup a basic aiohttp app.",
     }
 
@@ -38,7 +40,7 @@ async def process_form(request):
     session = await get_session(request)
     session['username'] = m.username
 
-    await request.app['pg'].execute('insert into messages (username, message) values ($1, $2)', m.username, m.message)
+    await request.app['pg'].execute('insert into demo_table (username, message) values ($1, $2)', m.username, m.message)
     raise HTTPFound(request.app.router['messages'].url_for())
 
 
@@ -67,7 +69,7 @@ async def message_data(request):
         select coalesce(array_to_json(array_agg(row_to_json(t))), '[]')
         from (
           select username, timestamp, message
-          from messages
+          from demo_table
           order by timestamp desc
         ) t
         """

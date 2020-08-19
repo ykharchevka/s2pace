@@ -109,3 +109,4 @@ venv.bak/
 # Custom things
 SERVER_PATH.txt
 _tmp/
+server/app/config.py
