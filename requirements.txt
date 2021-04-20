@@ -4,7 +4,7 @@ aiohttp-jinja2==1.1.1
 aiohttp-session==2.7.0
 asn1crypto==0.24.0
 async-timeout==3.0.1
-asyncpg==0.18.3
+asyncpg==0.21.0
 attrs==19.1.0
 certifi==2019.6.16
 cffi==1.12.3
