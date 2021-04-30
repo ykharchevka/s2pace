@@ -23,6 +23,6 @@ Pygments==2.4.2
 requests==2.22.0
 sc2reader==1.3.1
 six==1.12.0
-urllib3==1.25.3
+urllib3==1.25.8
 watchgod==0.4
 yarl==1.3.0
